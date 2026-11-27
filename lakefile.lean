@@ -34,4 +34,4 @@ lean_lib EthLib where
 
 -- Clean (Halo2-Clean + Midnight extensions + ComputableWitnesses/WritesConsistent, PR #528).
 require Clean from git
-  "https://github.com/Verified-zkEVM/clean.git" @ "c688bcd29819e9ef3beb678c3b7c614488ec4235"
+  "https://github.com/Verified-zkEVM/clean.git" @ "e777f353f16e705b441b12f4c0c1442292f8945e"

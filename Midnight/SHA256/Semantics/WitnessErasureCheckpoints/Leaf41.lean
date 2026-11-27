@@ -1,0 +1,18 @@
+import Midnight.SHA256.Semantics.WitnessErasureCheckpoints.Reduction
+
+namespace Midnight.SHA256.Semantics.WitnessErasureCheckpoints
+open Halo2
+
+sha256_erasure_reduction in
+
+theorem expand37Checked : Checked StructuralCheckpoints.expand37Action
+    StructuralCheckpoints.expand36After StructuralCheckpoints.expand37Output StructuralCheckpoints.expand37After
+    ((WitnessCheckpoints.expand37Operations 0).map WitnessErasure.Code.encode) := by
+  intro priorTrace
+  cases priorTrace with
+  | mk data =>
+    sha256_structural_unfold expand37
+    sha256_witness_unfold expand37
+    cbv
+
+end Midnight.SHA256.Semantics.WitnessErasureCheckpoints

@@ -1,0 +1,10 @@
+/.lake
+/build
+/scripts/target
+target/
+.DS_Store
+.vscode
+.codex
+.claude/settings.local.json
+__pycache__/
+*.pyc

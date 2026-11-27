@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+
+    steps:
+      # Mathlib, Clean, and the Midnight build outputs exceed a hosted runner's free disk.
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL /usr/local/share/boost
+          sudo docker image prune -af >/dev/null || true
+          df -h /
+      - uses: actions/checkout@v4
+      - name: Check for consecutive empty lines
+        run: python3 scripts/check-consecutive-empty-lines.py
+      - name: Check vendored EthLib hashes
+        run: python3 scripts/ethlib-vendor/vendor.py --check
+      - uses: leanprover/lean-action@v1
+        with:
+          # Prime Clean (downloads its release archive when pinned to a tag, or builds
+          # from source without tripping --wfail on the fallback warning).
+          build-args: "@Clean/Halo2"
+          test: false
+          lint: false
+      - name: Build Midnight and MidnightExport
+        run: lake build --wfail Midnight MidnightExport
+      - name: Build LoweringFixtures
+        run: lake build --wfail LoweringFixtures
